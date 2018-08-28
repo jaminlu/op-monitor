@@ -1,0 +1,198 @@
+{% extends "layouts.html" %}
+{% block breadcrumb %}
+<div class="col-md-6">
+    <div class="col-md-3" style="height: 35px; text-align: right;line-height: 35px">host|ip</div>
+    <div class="col-md-3" style="height: 35px; margin: 0; padding: 0"><input id="host" name="host" style="width: 140px; line-height: 35px; height: 35px" value=""></div>
+    <select name="sel1" id="sel1" onchange="initm(1)" style="height:35px;"><option value="-1" selected>请选择监控项</option> </select>
+</div>
+    <div class="col-md-6">
+        <div style="float: left; margin: 10px">时间从</div>
+        <div style="float: left"><input type="text" class="form-control pull-right" id="btime" style="width: 100px"></div>
+        <div style="float: left; margin: 0 10px 0 10px">到</div>
+        <div style="float: left"><input type="text" class="form-control pull-right" id="etime" style="width: 100px"></div>
+        <button type="botton" id="btn_flow_detail" class="btn btn-block btn-info btn-xs" style="float:left;margin:0px;margin-left:5px;height:35px;width:80px;" onclick="ShownData()">show</button>
+    </div>
+{% endblock %}
+
+{% block body %}
+<div bgcolor="#333">
+<div>
+    <h4 align="center"><font color="#6a7985">节点CPU使用率</font></h4>
+</div>
+<script type="text/javascript">
+        var cpu_date_arr = new Array();
+        {% for cpu_time_item in new_cpu_time %}
+        cpu_date_arr.push("{{cpu_time_item}}");
+        {% endfor %}
+</script>
+<!-- 为cpu-ECharts准备一个具备大小（宽高）的Dom -->
+<div id="cpu" align="center" style="width: 35%;height:250px;"></div>
+<script type="text/javascript" charset="UTF-8">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartCpu = echarts.init(document.getElementById('cpu'), 'dark');
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:[ 'USER(%)', 'SYSTEM(%)', 'IOWAIT(%)']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: {show: true, readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 0,
+                end: 100,
+                startValue: cpu_date_arr
+            }
+        ],
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                name: '时间',
+                nameLocation: 'end',
+                boundaryGap: false,
+                nameGap: 10,
+                data: cpu_date_arr
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} %'
+                },
+                 name: 'CPU使用率(%)'
+            }
+        ],
+        series: [
+            {
+                name: 'IOWAIT(%)',
+                type: 'line',
+                data: {{ cpu_io }}
+            },
+            {
+                name: 'USER(%)',
+                type: 'line',
+                data: {{cpu_user}}
+            },
+            {
+                name: 'SYSTEM(%)',
+                type: 'line',
+                data: {{cpu_system}}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartCpu.setOption(option);
+</script>
+
+<div>
+    <h4 align="center"><font color="#6a7985">节点内存使用率</font></h4>
+</div>
+<script type="text/javascript">
+        var mem_date_arr = new Array();
+        {% for mem_time_item in new_mem_time %}
+        mem_date_arr.push("{{mem_time_item}}");
+        {% endfor %}
+</script>
+
+<!-- 为cpu-ECharts准备一个具备大小（宽高）的Dom -->
+<div id="mem" align="center" style="width: 35%;height:250px;"></div>
+<script type="text/javascript" charset="UTF-8">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartMem = echarts.init(document.getElementById('mem'), 'dark');
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:[ '内存(%)']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: {show: true, readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 0,
+                end: 100,
+                startValue: cpu_date_arr
+            }
+        ],
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                name: '时间',
+                nameLocation: 'end',
+                boundaryGap: false,
+                nameGap: 10,
+                data: mem_date_arr
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} %'
+                },
+                 name: '内存使用率(%)'
+            }
+        ],
+        series: [
+            {
+                name: '内存(%)',
+                type: 'line',
+                data: {{ mem_use }}
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartMem.setOption(option);
+</script>
+
+
+</div>
+
+
+{% endblock %}

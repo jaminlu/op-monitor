@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="robots" content="index,follow">
+    <meta name="Author" content="reboot">
+
+    <link href="/static/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/alert/sweet-alert.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+
+    <title>Ops监控平台 - 管理员登陆</title>
+    </head>
+    <body class="gray-bg">
+        <!--loginbox again-->
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name"><img src="/static/images/Linux.png"></h1>
+            </div>
+            <h2 class="form-signin-heading" style="text-align: center;">用户登录</h2>
+            <form class="m-t" method="post"  id="loginform">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="username"  placeholder="用户名"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="密码"/>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">登录</button>
+                <a id='forget'>忘记密码</a>
+            </form>
+            <p class="m-t"><small>Op-Monitor Platform@2018</small></p>
+        </div>
+      </div>
+
+
+
+<script type="text/javascript" src="/static/vendor/alert/sweet-alert.min.js"></script>
+<script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
+
+<script type="text/javascript">
+/* 忘记密码提示*/
+$("#forget").click(function() {
+    str="请联系管理员帮您重置密码"+'\n'+"邮箱：lumingjie@xunlei.com"
+    swal(str)
+});
+
+/*用户登录*/
+$('#loginform').on('submit',function(){
+    var str = $('#loginform').serialize()
+	console.log(str)
+    $.post('/login',str,function(data){
+        data = JSON.parse(data)
+        if (data['status']==0){
+            location.href="/"
+        }else{
+            str = data['errmsg']
+            swal({
+                title: "Error",
+                text:str,
+                type:"error",
+                confirmButtonText: "Cool"
+            },function(){
+                location.href="/login"
+            });
+
+        }
+    })
+        return false;
+
+})
+
+</script>
+
+
+</body></html>

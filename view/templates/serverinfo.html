@@ -1,0 +1,82 @@
+{% extends "layouts.html" %}
+{% block breadcrumb %}
+<div class="col-md-6">
+    <div class="col-md-3" style="height: 35px; text-align: left;line-height: 35px">host|ip</div>
+    <div class="col-md-3" style="height: 35px; margin: 0; padding: 0">
+        <input id="host" name="host" style="width: 140px; line-height: 35px; height: 35px" value="">
+    </div>
+    <div class="col-md-6" style="height: 35px; text-align: right; padding: 0">
+    <select name="sel1" id="select1" onchange="show_sub()" style="height:35px;"><option value="-1" selected>请选择监控项</option>
+        <option id="net">网卡</option>
+        <option id="load">负载</option>
+        <option id="mem">内存</option>
+    </select>
+    </div>
+</div>
+    <div class="col-md-6"  style="text-align: right">
+        <div style="float: left; margin: 10px">时间从</div>
+        <div style="float: left" class="input-append date form_datetime">
+            <input type="text" class="form-control pull-right" id="btime" style="width: 100px" value="" readonly>
+            <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+        <script type="text/javascript">
+            $(".form_datetime").datetimepicker({
+            minView: "month",
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            language:'zh-CN',
+            pickerPosition:"bottom-left"
+            });
+                console.log($('#btime').data('date'));
+
+        </script>
+        <div style="float: left; margin: 10px">到</div>
+        <div style="float: left" class="input-append date form_datetime">
+            <input type="text" class="form-control pull-right" id="etime" style="width: 100px" value="" readonly>
+            <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+         <script type="text/javascript">
+            $(".form_datetime").datetimepicker({
+            minView: "month",
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            language:'zh-CN',
+            pickerPosition:"bottom-left"
+            });
+            $('#etime').click(function () {
+                console.log($('#etime').val());
+            })
+        </script>
+        <button type="botton" id="btn_flow_detail" class="btn btn-block btn-info btn-xs" style="float:left;margin:0px;margin-left:5px;height:35px;width:80px;" onclick="ShownData()">show</button>
+        <script type="text/javascript">
+                function show_sub() { 
+                    var obj1=document.getElementById('select1'); 
+                    var item=obj1.options[obj1.selectedIndex].value; 
+                    console.log(item) }  
+                function ShownData() { 
+                    var hostname=$('#host').val(); 
+                    var st=$('#btime').val(); 
+                    var et=$('#etime').val(); 
+                    var obj1=$('#select1 option:selected'); 
+                    var item=obj1.attr("id"); 
+                    var data={ 
+                        data: JSON.stringify({ 'hostname': hostname,  'item': item, 'st':st, 'et': et }),     }; 
+                    $.ajax({  type: 'POST', 
+                        url: "/cmdb/serverinfo", 
+                        data: data, 
+                        conterType: 'application/json: charset=UTF-8', 
+                        success: 'success'     });
+
+                console.log(data)
+            }
+        </script>
+    </div>
+{% endblock %}
+
+{% block body %}
+<div bgcolor="#333">
+</div>
+{% endblock %}
+

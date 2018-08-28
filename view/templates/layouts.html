@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Op-monitor</title>
+
+    <link href="/static/dashboard/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/dashboard/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/dashboard/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/vendor/metismenu/metis-menu.min.css" rel="stylesheet">
+
+
+    <link href="/static/dashboard/css/animate.css" rel="stylesheet">
+    <link href="/static/dashboard/css/style.css" rel="stylesheet">
+
+    <script src="/static/bootstrap/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-datetimepicker.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <!----引入echarts--->
+    <script src="https://unpkg.com/echarts@3.5.3/dist/echarts.js" charset="UTF-8"></script>
+    <script src="/static/echarts/js/echarts.min.js" charset="UTF-8"></script>
+
+    <!---引入echarts结束--->
+
+</head>
+
+<body charset="UTF-8">
+
+<div id="wrapper">
+
+    <!---页面左侧导航栏--->
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="/static/dashboard/img/profile_small.jpg" />
+                             </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Lu mingjie</strong>
+                             </span> <span class="text-muted text-xs block">管理员<b class="caret"></b></span> </span> </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="contacts.html">Contacts</a></li>
+                        <li><a href="mailbox.html">Mailbox</a></li>
+                        <li class="divider"></li>
+                        <li><a href="login.html">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+            <li>
+                <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">带宽</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="index.html">总带宽</a></li>
+                    <li><a href="dashboard_2.html">机房带宽</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-database fa-fw"></i> <span class="nav-label">网络</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="graph_flot.html">机房交换机与网络</a></li>
+                    <li><a href="graph_morris.html">机房间网络质量</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">系统</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="/cmdb/serverinfo">服务器维度</a></li>
+                    <li><a href="form_advanced.html">丢包严重服务器</a></li>
+                    <li><a href="form_wizard.html">高负载服务器</a></li>
+                    <li><a href="form_file_upload.html">大流量服务器</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">集群</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="search_results.html">lvs集群</a></li>
+                    <li><a href="lockscreen.html">nginx集群</a></li>
+                    <li><a href="invoice.html">redis集群</a></li>
+                    <li><a href="login.html">mysql集群</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">业务</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="typography.html">Account</a></li>
+                    <li><a href="icons.html">支付</a></li>
+                    <li><a href="draggable_panels.html">Hub</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">告警</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="table_basic.html">严重告警</a></li>
+                    <li><a href="table_data_tables.html">一般告警</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">test</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="ecommerce_products_grid.html">test1</a></li>
+                    <li><a href="ecommerce_product_list.html">test2</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<!---页面左侧导航栏结束--->
+
+
+<!---页面头部导航栏开始--->
+<div id="page-wrapper" class="gray-bg dashoard-1">
+<div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a7.jpg">
+                                </a>
+                                <div class="media-body">
+                                    <small class="pull-right">46h ago</small>
+                                    <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                    <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a4.jpg">
+                                </a>
+                                <div class="media-body ">
+                                    <small class="pull-right text-navy">5h ago</small>
+                                    <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                    <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/profile.jpg">
+                                </a>
+                                <div class="media-body ">
+                                    <small class="pull-right">23h ago</small>
+                                    <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                    <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="mailbox.html">
+                                    <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="mailbox.html">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="profile.html">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="grid_options.html">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="notifications.html">
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="login.html">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </a>
+                </li>
+                <li>
+                    <a class="right-sidebar-toggle">
+                        <i class="fa fa-tasks"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+</div>
+<!---页面头部导航栏结束--->
+
+<!---筛选框 样式开始--->
+<div class="row wrapper border-bottom white-bg" style="height: 60px">
+                <div class="col-lg-10" style="margin-top:10px;margin-bottom: 10px">
+                        {% block breadcrumb %}
+                        {% endblock %}
+                </div>
+</div>
+<!----筛选框样式结束--->
+
+
+<!--页面正文部分-->
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+ <!--页面正文部分结束-->
+
+<!---页面底栏开始--->
+<div class="footer" >
+    <div class="pull-right">
+        10GB of <strong>250GB</strong> Free.
+    </div>
+    <div>
+        <strong>Copyright</strong> Example Company &copy; 2014-2017
+    </div>
+</div>
+<!---页面底栏结束--->
+
+
+</div>
+</div>
+
+
+<!-- Mainly scripts -->
+<script src="/static/bootstrap/js/jquery-3.1.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+<script src="/static/vendor/metismenu/metis-menu.min.js"></script>
+<script>
+        $("#side-menu").metisMenu()
+        {% block js %}
+        {% endblock %}
+    </script>
+
+
+</body>
+
+</html>
